@@ -41,19 +41,18 @@ git clone git://github.com/dereuromark/cakephp-seo.git Seo
 
 Add the component to your AppController $components and $helpers arrays:
 
-```<?php
+```php
 class AppController extends Controller {
 	public $components = array('Seo.Seo');
 	public $helpers = array('Seo.Seo');
 }
-?>
 ```
 
 By default, Seo does not automatically load SEO data from the database. You should create
 callbacks in your controllers to do that. Callbacks are on a per-action basis, with `_seo`
 prepending the name of the action, where the first letter of the action is upper-cased:
 
-```<?php
+```php
 class UsersController extends AppController {
 
 	public function profile($username = null) {
@@ -75,7 +74,6 @@ class UsersController extends AppController {
 		$this->Seo->setMeta('canonical', "/view/{$user['User']['username']}/", array('escape' => false));
 	}
 }
-?>
 ```
 
 If you do not have a callback for a given action, there is always the option of specifying a
@@ -99,7 +97,7 @@ all others.
 Once you've loaded seo data, it's time to set it for the view. Included is a `SeoHelper`
 which automatically will deal with these details:
 
-```
+```html
 <!DOCTYPE html>
 <html lang="en">
 	<head>
