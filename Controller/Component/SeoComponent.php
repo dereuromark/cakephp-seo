@@ -1,17 +1,16 @@
 <?php
-
+App::uses('Component', 'Controller');
 App::uses('Router', 'Routing');
 
 /**
- * ShamComponent class
+ * SeoComponent class
  *
  * combines code from various locations (Symfony core, mi_seo)
  *
- * @uses          Object
  * @package       sham
  * @subpackage    sham.controllers.components
  */
-class ShamComponent extends Component {
+class SeoComponent extends Component {
 
 /**
  * Other components used by the Seo component
@@ -79,7 +78,7 @@ class ShamComponent extends Component {
  * Initialize component
  *
  * @param object $controller Instantiating controller
- * @access public
+ * @return void
  */
 	public function initialize(Controller $controller) {
 		$this->Controller = $controller;
@@ -88,7 +87,7 @@ class ShamComponent extends Component {
 		$this->response = $controller->response;
 		$this->_methods = $controller->methods;
 
-		if ($this->settings['autoRun'] && $controller->name != 'CakeError') {
+		if ($this->settings['autoRun'] && $controller->name !== 'CakeError') {
 			$this->check($this->settings['maxArgs']);
 		}
 	}
@@ -101,7 +100,6 @@ class ShamComponent extends Component {
  * @param mixed $status
  * @param mixed $exit
  * @return void
- * @access public
  */
 	public function beforeRedirect(Controller $controller, $url, $status = null, $exit = true) {
 		if ($this->settings['sortNamedParams']) {
@@ -112,7 +110,7 @@ class ShamComponent extends Component {
 /**
  * Sets seo headers for the view
  *
- * @access public
+ * @return void
  */
 	public function beforeRender(Controller $controller) {
 		if (!isset($this->Controller)) {
@@ -125,8 +123,8 @@ class ShamComponent extends Component {
 			$this->Controller->{$this->settings['fallback']}();
 		}
 
-		if (method_exists($this->Controller, '_seoAfterSham')) {
-			$this->Controller->{'_seoAfterSham'}();
+		if (method_exists($this->Controller, '_seoAfterMeta')) {
+			$this->Controller->{'_seoAfterMeta'}();
 		}
 
 		$this->setMeta('charset', Configure::read('App.encoding'));
@@ -207,6 +205,7 @@ class ShamComponent extends Component {
  *                          string  $encoding encoding accepted by htmlspecialchars
  *                          bool    $replace  true if it's replaceable
  * @param bool True if meta header is overridden, false otherwise
+ * @return boolean Success
  */
 	public function setMeta($key, $value, $options = array()) {
 		if (is_bool($options)) {
@@ -243,7 +242,6 @@ class ShamComponent extends Component {
  * Disabled for requestAction and POST requests
  *
  * @return void
- * @access public
  */
 	public function check($maxArgs = null) {
 		if (isset($this->Controller->params['requested']) || $this->RequestHandler->isAjax() || $this->Controller->data) {
@@ -310,7 +308,6 @@ class ShamComponent extends Component {
  *
  * @param mixed $url
  * @return mixed $url
- * @access public
  */
 	public function sortUrl($url = null) {
 		if (is_string($url)) {
@@ -344,6 +341,11 @@ class ShamComponent extends Component {
 		return am($named, $url);
 	}
 
+	/**
+	 * SeoComponent::_addExt()
+	 *
+	 * @return boolean Success
+	 */
 	protected function _addExt() {
 		if (empty($this->request->params['ext'])) {
 			return false;

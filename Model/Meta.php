@@ -1,12 +1,21 @@
 <?php
-class Seo extends ShamAppModel {
+App::uses('SeoAppModel', 'Seo.Model');
 
+class Meta extends SeoAppModel {
+
+	/**
+	 * Retrieve SEO meta data - including basic caching.
+	 *
+	 * @param string $slug
+	 * @param array $options
+	 * @return array
+	 */
 	public function retrieveBySlug($slug, $options = array()) {
 		$options = array_merge(array(
 			'record' => false,
 			'seo_only' => false,
 			'skip' => array(),
-		), (array) $options);
+		), (array)$options);
 
 		$hash = md5(serialize($options));
 		if (($record = Cache::read('seo.slug.' . $hash)) !== false) {
@@ -15,7 +24,7 @@ class Seo extends ShamAppModel {
 
 		$seo = $this->findBySlug($slug);
 		if (!$seo) {
-			return null;
+			return array();
 		}
 
 		if ($options['seo_only']) {

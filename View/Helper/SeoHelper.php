@@ -1,13 +1,15 @@
 <?php
+App::uses('AppHelper', 'View/Helper');
+
 /**
- * ShamHelper helper library.
+ * SeoHelper helper library.
  *
  * Helps output seo meta headers on a page
  *
  * @package       sham
  * @subpackage    sham.view.helpers
  */
-class ShamHelper extends AppHelper {
+class SeoHelper extends AppHelper {
 
 /**
  * Included helpers.
@@ -75,7 +77,7 @@ class ShamHelper extends AppHelper {
  * Outputs a meta header or series of meta headers
  *
  * @param string $header Specific meta header to output
- * @param array $options 
+ * @param array $options
  * @return string
  */
 	public function out($header = null, $options = array()) {

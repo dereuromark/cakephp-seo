@@ -1,6 +1,6 @@
-<?php 
-/* generated on: 2012-01-17 01:19:07 : 1326763147 */
-class ShamSchema extends CakeSchema {
+<?php
+
+class SeoSchema extends CakeSchema {
 
 	public function before($event = array()) {
 		return true;
