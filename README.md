@@ -16,10 +16,10 @@ The original repo name was Sham, but we liked Seo a lot better.
 
 ### Manual
 
-# Download this: http://github.com/dereuromark/cakephp-seo/zipball/master
-# Unzip that download.
-# Copy the resulting folder to app/Plugin
-# Rename the folder you just copied to `Seo`
+* Download this: http://github.com/dereuromark/cakephp-seo/zipball/master
+* Unzip that download.
+* Copy the resulting folder to app/Plugin
+* Rename the folder you just copied to `Seo`
 
 ### GIT Submodule
 
