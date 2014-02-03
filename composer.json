@@ -1,0 +1,14 @@
+{
+  "name": "dereuromark/cakephp-seo",
+  "type": "cakephp-plugin",
+        "description": "A plugin for CakePHP 2.x to handle all SEO related stuff.",
+  "homepage": "http://github.com/dereuromark/cakephp-seo",
+  "license": "MIT",
+  "require": {
+    "php": ">=5.3.0",
+    "composer/installers": "*"
+  },
+  "extra": {
+		"installer-name": "Seo",
+	}
+}
