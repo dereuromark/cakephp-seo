@@ -9,6 +9,6 @@
     "composer/installers": "*"
   },
   "extra": {
-		"installer-name": "Seo",
+		"installer-name": "Seo"
 	}
 }
