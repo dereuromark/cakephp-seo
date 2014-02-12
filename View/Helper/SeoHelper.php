@@ -11,27 +11,27 @@ App::uses('AppHelper', 'View/Helper');
  */
 class SeoHelper extends AppHelper {
 
-/**
- * Included helpers.
- *
- * @var array
- */
+	/**
+	 * Included helpers.
+	 *
+	 * @var array
+	 */
 	public $helpers = array('Html');
 
-/**
- * Meta headers for the response
- *
- * @var array
- */
+	/**
+	 * Meta headers for the response
+	 *
+	 * @var array
+	 */
 	public $meta = array();
 
 	public $canonical = null;
 
-/**
- * Class Constructor
- *
- * @param array $options
- */
+	/**
+	 * Class Constructor
+	 *
+	 * @param array $options
+	 */
 	public function __construct(View $View, $settings = array()) {
 		parent::__construct($View, $settings);
 
@@ -51,12 +51,12 @@ class SeoHelper extends AppHelper {
 		$this->meta = array_merge((array) $settings, $this->meta);
 	}
 
-/**
- * Outputs a canonical tag to the page
- *
- * @param mixed $url canonical url override
- * @return string
- **/
+	/**
+	 * Outputs a canonical tag to the page
+	 *
+	 * @param mixed $url canonical url override
+	 * @return string
+	 **/
 	public function canonical($url = null) {
 		if (!$url) {
 			$url = $this->canonical;
@@ -73,13 +73,13 @@ class SeoHelper extends AppHelper {
 		return $this->Html->meta('canonical', $url, array('rel' => 'canonical', 'type' => null, 'title' => null));
 	}
 
-/**
- * Outputs a meta header or series of meta headers
- *
- * @param string $header Specific meta header to output
- * @param array $options
- * @return string
- */
+	/**
+	 * Outputs a meta header or series of meta headers
+	 *
+	 * @param string $header Specific meta header to output
+	 * @param array $options
+	 * @return string
+	 */
 	public function out($header = null, $options = array()) {
 		$options = array_merge(array(
 			'implode' => '',
@@ -143,4 +143,55 @@ class SeoHelper extends AppHelper {
 		return implode($options['implode'], $results);
 	}
 
+	/**
+	 * Creates a breadcrumb navigation for every page.
+	 * Uses config breadcrumb if usable.
+	 * Defaults can be overridden in each Controller Action.
+	 *
+	 * @return array
+	 */
+	public function breadcrumb() {
+		$breadcrumb = Configure::read('Breadcrumb');
+		$remove = '';
+		$name = '';
+		if (isset($breadcrumb, $breadcrumb[$this->params['controller']])) {
+			$this->Html->addCrumb(__($breadcrumb[$this->params['controller']]['name']),	array(
+				'controller' => $this->params['controller'],
+				'action' => $breadcrumb[$this->params['controller']]['action']));
+			if (!empty($breadcrumb[$this->params['controller']]['elements'][$this->params['action']]) && $breadcrumb[$this->params['controller']]['action'] != $this->params['action']) {
+				if ($this->params['action'] == 'view' && !empty($this->params['pass'])) {
+					$option = array('slug' => $this->params['pass']);
+					$model = $breadcrumb[$this->params['controller']]['model'];
+					$name = $this->_View->viewVars[strtolower($model)][$model]['name'];
+					$this->Html->addCrumb($name, array(
+						'controller' => $this->params['controller'],
+						'action' => $this->params['action'] . '/' . $this->params['pass'][0],
+					));
+					$remove = $this->Html->url(array(
+						'controller' => $this->params['controller'],
+						'action' => $this->params['action'] . '/' . $this->params['pass'][0],
+					));
+				} else {
+					$name = __($breadcrumb[$this->params['controller']]['elements'][$this->params['action']]);
+					$this->Html->addCrumb(__($breadcrumb[$this->params['controller']]['elements'][$this->params['action']]), array(
+						'controller' => $this->params['controller'],
+						'action' => $this->params['action']
+					));
+					$remove = $this->Html->url(array(
+						'controller' => $this->params['controller'],
+						'action' => $this->params['action'],
+					));
+				}
+			}
+		} elseif ($this->params['webroot'] !== $this->params['here']) {
+			$this->Html->addCrumb(__(ucfirst($this->params['controller'])), array(
+				'controller' => $this->params['controller'],
+				'action' => $this->params['action']
+			));
+		}
+		$search = array('<a href="' . $remove. '">' . $name . '</a>', '<ul>', '</ul>');
+		$replace = array($name, '', '');
+		$crumb = $this->Html->getCrumbList(array('firstClass' => 'first', 'lastClass' => 'last', 'separator' => $breadcrumb['delimeter']), __('Home'));
+		return str_replace($search, $replace, $crumb);
+	}
 }
