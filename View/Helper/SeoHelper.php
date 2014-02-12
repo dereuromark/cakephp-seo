@@ -159,7 +159,7 @@ class SeoHelper extends AppHelper {
 				'controller' => $this->params['controller'],
 				'action' => $breadcrumb[$this->params['controller']]['action']));
 			if (!empty($breadcrumb[$this->params['controller']]['elements'][$this->params['action']]) && $breadcrumb[$this->params['controller']]['action'] != $this->params['action']) {
-				if ($this->params['action'] == 'view' && !empty($this->params['pass'])) {
+				if ($this->params['action'] === 'view' && !empty($this->params['pass'])) {
 					$option = array('slug' => $this->params['pass']);
 					$model = $breadcrumb[$this->params['controller']]['model'];
 					$name = $this->_View->viewVars[strtolower($model)][$model]['name'];
