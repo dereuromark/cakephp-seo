@@ -155,7 +155,7 @@ class SeoHelper extends AppHelper {
 		$remove = '';
 		$name = '';
 		if (isset($breadcrumb, $breadcrumb[$this->params['controller']])) {
-			$this->Html->addCrumb(__($breadcrumb[$this->params['controller']]['name']),	array(
+			$this->Html->addCrumb(__($breadcrumb[$this->params['controller']]['name']), array(
 				'controller' => $this->params['controller'],
 				'action' => $breadcrumb[$this->params['controller']]['action']));
 			if (!empty($breadcrumb[$this->params['controller']]['elements'][$this->params['action']]) && $breadcrumb[$this->params['controller']]['action'] != $this->params['action']) {
